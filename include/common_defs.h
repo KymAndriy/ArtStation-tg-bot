@@ -1,0 +1,7 @@
+#ifndef IMG_BOT_COMMON_DEFS_H
+#define IMG_BOT_COMMON_DEFS_H
+
+
+// "KEYBOARD_MAP"
+
+#endif
