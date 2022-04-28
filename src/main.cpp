@@ -8,19 +8,21 @@
 
 int main()
 {
-    JsonParser p("/home/andrii/home_projects/image_bot/bot_configs.json");
+    JsonParser p("/home/andrii/temp_project/ArtStation-tg-bot/bot_configs.json");
     p.parse();
     
     std::string str;
-    std::fstream fst("/home/andrii/home_projects/image_bot/a.txt", fst.in);
+    std::fstream fst("/home/andrii/temp_project/ArtStation-tg-bot/artwork.json", std::ios::in);
     std::string temp;
     while(!fst.eof())
     {
         fst >> temp;
         str.append(temp);
     } 
-    UrlGrabber grab(p.getImageUrlRegex(), str);
-   
+    std::cout << p.getImageRegex() << "\n" << p.getUrlRegex() << std::endl;
+    UrlGrabber grab;//(p.getImageUrlRegex(), str);
+    grab.setParseStr(str);
+    grab.setRegexExpression(p.getUrlRegex());
     std::vector<std::string> _urls = grab.getUrls();
 
 

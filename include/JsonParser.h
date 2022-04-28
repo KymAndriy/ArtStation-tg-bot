@@ -16,7 +16,7 @@ public:
 
     std::string getUrlRegex() const;
     
-    std::string getImageUrlRegex() const;
+    std::string getImageRegex() const;
 
     std::map<std::string, std::string> getNameAndUrls() const;
 

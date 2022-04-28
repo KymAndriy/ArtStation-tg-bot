@@ -1,9 +1,9 @@
 {
-    "BOT_TOKEN": "",
-    "URL_REGEX": "",
-    "IMAGE_REGEX": "",
+    "BOT_TOKEN": "qwerty12345678",
+    "URL_REGEX": "https://cdnb\\.artstation\\.com/([\\w\\d\/\\-])+(\\.jpg\\?)",
+    "IMAGE_REGEX": "https://www\\.artstation\\.com/artwork/([\\w\\d])+",
     "KEYBOARD_MAP": 
-        {   //keys                                          // sorted by channel_id                                                     69...128
+        {   
             "Anatomy":                                      "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=69&page=1&sorting=trending&dimension=all&per_page=100",
             "Abstract":                                     "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=70&page=1&sorting=trending&dimension=all&per_page=100",
             "Animals and Wildlfe":                          "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=71&page=1&sorting=trending&dimension=all&per_page=100",
@@ -66,7 +66,4 @@
             "Automotive":                                   "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=128&page=1&sorting=trending&dimension=all&per_page=100",
             "The Art of HALO Infinite":                     "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=6212&page=1&sorting=trending&dimension=all&per_page=100"
         }
-
-
-
 }

@@ -75,7 +75,7 @@ std::string JsonParser::getUrlRegex() const
     return _URL_REGEX;
 }
 
-std::string JsonParser::getImageUrlRegex() const
+std::string JsonParser::getImageRegex() const
 {
     return _IMAGE_REGEX;
 }

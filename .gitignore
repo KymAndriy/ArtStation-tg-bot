@@ -2,3 +2,5 @@
 build/
 f.json
 a.txt
+*.html
+temp*

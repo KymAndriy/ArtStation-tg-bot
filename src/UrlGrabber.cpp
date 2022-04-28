@@ -13,7 +13,7 @@ void UrlGrabber::setRegexExpression(std::string regex_expression)
     was_changes = true;
 }
 
-void UrlGrabber::setParseStr(std::string& to_parse_srt)
+void UrlGrabber::setParseStr(std::string to_parse_srt)
 {
     _json_str = to_parse_srt;
     was_changes = true;
@@ -32,9 +32,8 @@ void UrlGrabber::grabUrls()
 {
     _urls.clear();
     std::set<std::string> unique;
-    boost::regex regex(_regex_str, std::regex_constants::ECMAScript);
-    boost::sregex_iterator start(_json_str.begin(),
-                                    _json_str.end(), regex);
+    boost::regex regex(_regex_str, boost::regex_constants::ECMAScript); 
+    boost::sregex_iterator start(_json_str.begin(), _json_str.end(), regex);
     boost::sregex_iterator end;
     for (; start != end; start++)
     {
@@ -45,16 +44,15 @@ void UrlGrabber::grabUrls()
     _urls.assign(unique.begin(), unique.end());
 }
 
-// std::vector<std::string> parseJsonArtworksHash(std::string json_str)
+// void UrlGrabber::grabUrls()
 // {
-//     std::vector<std::string> urls;
-//     boost::json::value v = boost::json::parse(json_str);
+//     _urls.clear();
+//     boost::json::value v = boost::json::parse(_json_str);
 //     boost::json::object js = v.get_object();
 //     boost::json::array ar = js.at("data").as_array();
 
 //     for (auto it = ar.begin(); it != ar.end(); ++it)
 //     {
-//         urls.push_back(boost::to_string(it->at("url").as_string()));
+//         _urls.push_back(boost::to_string(it->at("url").as_string()));
 //     }
-//     return urls;
 // }
