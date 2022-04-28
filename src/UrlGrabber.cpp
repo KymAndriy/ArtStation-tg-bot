@@ -9,7 +9,7 @@ UrlGrabber::UrlGrabber(std::string regex_expression, std::string& json_str)
 
 void UrlGrabber::setRegexExpression(std::string regex_expression)
 {
-    _regex_str = regex_expression;
+    _regex_str = regex_expression.c_str();
     was_changes = true;
 }
 

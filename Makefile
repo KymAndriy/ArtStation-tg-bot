@@ -1,4 +1,4 @@
-TG_FLAGS = --std=c++11 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lboost_system -lboost_json -lssl -lcrypto -lpthread
+TG_FLAGS = --std=c++17 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lboost_system -lboost_json -lssl -lcrypto -lpthread
 # SCR = src
 OBJ_FLAGS = -c $(TG_FLAGS)
 DEBUG = -g

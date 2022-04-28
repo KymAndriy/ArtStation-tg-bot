@@ -1,6 +1,6 @@
 {
     "BOT_TOKEN": "qwerty12345678",
-    "URL_REGEX": "https://cdnb\\.artstation\\.com/([\\w\\d\/\\-])+(\\.jpg\\?)",
+    "URL_REGEX": "https://cdnb\\.artstation\\.com/([\\w\\d/-])+(\\.jpg\\?)",
     "IMAGE_REGEX": "https://www\\.artstation\\.com/artwork/([\\w\\d])+",
     "KEYBOARD_MAP": 
         {   
