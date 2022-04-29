@@ -19,7 +19,7 @@ int main()
         fst >> temp;
         str.append(temp);
     } 
-    UrlGrabber grab(p.getImageUrlRegex(), str);
+    UrlGrabber grab(p.getImageRegex(), str);
    
     std::vector<std::string> _urls = grab.getUrls();
 

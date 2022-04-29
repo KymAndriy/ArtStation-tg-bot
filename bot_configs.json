@@ -1,5 +1,5 @@
 {
-    "BOT_TOKEN": "qwerty12345678",
+    "BOT_TOKEN": "5100845220:AAGs-2HtyQW9cxGv4wfEN26qdtUtqqoSg2Q",
     "URL_REGEX": "https://cdnb\\.artstation\\.com/([\\w\\d/-])+(\\.jpg\\?)",
     "IMAGE_REGEX": "https://www\\.artstation\\.com/artwork/([\\w\\d])+",
     "KEYBOARD_MAP": 
