@@ -26,14 +26,16 @@ void createKeyboard(const std::map<std::string, std::string> &buttonStringsMap, 
     {
         std::string button_text = it->first;// = boost::algorithm::to_lower_copy(it->first);
         std::string button_com = boost::algorithm::to_lower_copy(button_text);
-        std::replace( button_com.begin(), button_com.end(), '_', ' ');
+        // std::replace( button_com.begin(), button_com.end(), '_', ' ');
         InlineKeyboardButton::Ptr checkButton(new InlineKeyboardButton);
         checkButton->text = button_text;
-        // checkButton->
         checkButton->callbackData = button_com;
         row.push_back(checkButton);
-
-        if ((i % 3) == 0)
+        if(button_com.find(' ') > (button_com.size()-2))
+        {
+            std::cout << button_com << std::endl;
+        }
+        if (((i != 0) && (i % 3) == 0) || it->first.size() > 12)
         {
             keyboard->inlineKeyboard.push_back(row);
             row.clear();
@@ -49,7 +51,7 @@ void createComands(const std::map<std::string, std::string> &buttonStringsMap, B
     for (auto it = buttonStringsMap.begin(); it != buttonStringsMap.end(); it++)
     {
         std::string com = boost::algorithm::to_lower_copy(it->first);
-        std::replace( com.begin(), com.end(), ' ', '_');
+        // std::replace( com.begin(), com.end(), ' ', '_');
         // com.append(std::to_string(i++));
 
         bot.getEvents().onCommand(com, [&bot, &keyboard, it](Message::Ptr message)
@@ -90,23 +92,26 @@ int main()
 
     // createComands(p.getNameAndUrls(), bot, keyboard);
 
-    // int i = 0;
+    // int i = 0
+    std::cout << "-----------------------------------"<< std::endl;
     for (auto it = buttonStringsMap.begin(); it != buttonStringsMap.end(); it++)
     {
         std::string com = boost::algorithm::to_lower_copy(it->first);
         std::replace( com.begin(), com.end(), ' ', '_');
+        std::cout << com << std::endl;
+
         bot.getEvents().onCommand(com, [&bot, it](Message::Ptr message) {
             bot.getApi().sendMessage(message->chat->id, it->second);//, false, 0, , "Markdown");
         });
 
-        //  bot.getEvents().onCallbackQuery([&bot, &keyboard,com, it](CallbackQuery::Ptr query) {
-        //     if (StringTools::startsWith(query->data, com)) {
-        //         bot.getApi().sendMessage(query->message->chat->id, it->second);//, false, 0, 0, "Markdown");
-        //     }
-        // });
+         bot.getEvents().onCallbackQuery([&bot, &keyboard,com, it](CallbackQuery::Ptr query) {
+            if (StringTools::startsWith(query->data, com)) {
+                bot.getApi().sendMessage(query->message->chat->id, it->second);//, false, 0, 0, "Markdown");
+            }
+        });
     }
     bot.getEvents().onCommand("start", [&bot, &keyboard](Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, 0, false, 0, keyboard);
+        bot.getApi().sendMessage(message->chat->id, "Choose theme:", false, 0, keyboard);
     });
 
     // bot.getEvents().onCallbackQuery([&bot, &keyboard](CallbackQuery::Ptr query) {
@@ -128,7 +133,7 @@ int main()
     TgLongPoll longPoll(bot);
     while (true)
     {
-        printf("Long poll started\n");
+        // printf("Long poll started\n");
         longPoll.start();
     }
     // } catch (std::exception& e) {
