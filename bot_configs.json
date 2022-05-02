@@ -6,7 +6,7 @@
         {   
             "Anatomy":                                      "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=69&page=1&sorting=trending&dimension=all&per_page=100",
             "Abstract":                                     "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=70&page=1&sorting=trending&dimension=all&per_page=100",
-            "Animals_and_Wildlfe":                          "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=71&page=1&sorting=trending&dimension=all&per_page=100",
+            "Animals_&_Wildlfe":                          "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=71&page=1&sorting=trending&dimension=all&per_page=100",
             "Anime_&_Manga":                              "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=72&page=1&sorting=trending&dimension=all&per_page=100",
             "Architectural_Visualization":                  "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=73&page=1&sorting=trending&dimension=all&per_page=100",
             "Character_Design":                             "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=74&page=1&sorting=trending&dimension=all&per_page=100",

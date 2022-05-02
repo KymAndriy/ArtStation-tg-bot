@@ -1,14 +1,15 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
-#include <csignal>
-#include <cstdio>
-#include <cstdlib>
-#include <exception>
-#include <string>
-#include <vector>
-#include <algorithm>
+// #include <iostream>
+// #include <string>
+// #include <fstream>
+// #include <vector>
+// #include <csignal>
+// #include <cstdio>
+// #include <cstdlib>
+// #include <exception>
+// #include <string>
+// #include <vector>
+// #include <algorithm>
+
 #include <tgbot/tgbot.h>
 
 #include "JsonParser.h"
@@ -76,22 +77,35 @@ int main(int argc, char *argv[])
         std::replace(com.begin(), com.end(), '-', '_');
         std::replace(com.begin(), com.end(), '&', '_');
 
-        bot.getEvents().onCommand(com, [&bot, it](Message::Ptr message)
-                                  { bot.getApi().sendMessage(message->chat->id, it->second); });
+        // bot.getEvents().onCommand(com, [&bot, it](Message::Ptr message)
+        //                           { bot.getApi().sendMessage(message->chat->id, it->second); });
 
         bot.getEvents().onCallbackQuery([&bot, &keyboard, com, it](CallbackQuery::Ptr query)
                                         {
             if (StringTools::startsWith(query->data, com)) {
                 ///TODO: add sending photoes utility
+                bot.getApi().sendChatAction(query->message->chat->id,"upload_photo");
+                ///TODO: Add Thread poll that created once and only receive url, return
+                /*
+                    struct art
+                    {
+                        photo_url,
+                        artist,
+                        number of artist work
+                    }
+                */
 
+                // bot.getApi().sendMessage(query->message->chat->id, msg, true, 0,0,"HTML");
                 ///TODO: Remove second append
                 std::string msg = it->first;
                 std::replace( msg.begin(), msg.end(), '_', ' ');
-                msg.append(", /menu\n").append(it->second);
-                bot.getApi().sendMessage(query->message->chat->id, msg);
+                ///TODO: Add link to artist and Name 
+                msg.append(", <a href=\"").append(it->second).append("\">Artist</a> /menu\n");
+                bot.getApi().sendMessage(query->message->chat->id, msg, true, 0,0,"HTML");
             } });
     }
-
+    
+    ///TODO: write bot description
     bot.getEvents().onCommand("start", [&bot, &keyboard](Message::Ptr message)
                               { bot.getApi().sendMessage(message->chat->id, "Choose theme:", false, 0, keyboard); });
     bot.getEvents().onCommand("menu", [&bot, &keyboard](Message::Ptr message)
