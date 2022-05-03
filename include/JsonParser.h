@@ -14,9 +14,9 @@ public:
 
     std::string getToken() const;
 
-    std::string getUrlRegex() const;
+    std::string getFinalUrlRegex() const;
     
-    std::string getImageRegex() const;
+    std::string getHashImageRegex() const;
 
     std::map<std::string, std::string> getNameAndUrls() const;
 
@@ -25,14 +25,14 @@ public:
 private:
     std::fstream _json_file;
     std::string _TOKEN;
-    std::string _IMAGE_REGEX;
+    std::string _HASH_REGEX;
     std::string _URL_REGEX;
     std::map<std::string, std::string> _name_and_urls;    
 
     static const std::string _TOKEN_KEY; 
     static const std::string _MAP_KEY;
     static const std::string _URL_KEY;
-    static const std::string _IMAGE_KEY;
+    static const std::string _HASH_IMAGE_KEY;
 };
 
 #endif

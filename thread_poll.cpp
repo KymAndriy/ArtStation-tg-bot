@@ -9,15 +9,16 @@
 #include <string>
 // #include
 
-// #include 
+// #include
 
-template<typename T>
-class poll
+template <typename T>
+class queue_thread
 {
     void push(T into_queue)
     {
         std::lock_guard<std::mutex> lock();
         collection_poll.push(into_queue);
+        size_ = collection_poll.size();
     }
 
     T pop()
@@ -25,6 +26,7 @@ class poll
         std::lock_guard<std::mutex> lock();
         T temp = collection_poll.front();
         collection_poll.pop();
+        size_ = collection_poll.size();
         return temp;
     }
 
@@ -34,63 +36,71 @@ class poll
         return collection_poll.size() > 0;
     }
 
+    size_t size()
+    {
+        std::lock_guard<std::mutex> lock();
+        return size_;
+    }
+
 private:
+    size_t size_;
     std::queue<T> collection_poll;
     std::mutex adding_mutex;
 };
 
-
-class thread_poll
+class thread_pool
 {
 public:
-    thread_poll()
+    thread_pool()
     {
         thread_number = 4;
-      
-
+        for (int i = 0; i < thread_number; i++)
+        {
+            th_pool[i] = std::thread(thread_pool::run, this);
+        }
     }
 
-    thread_poll(size_t thread_quantity)
+    thread_pool(size_t thread_quantity)
     {
         thread_number = (thread_quantity > 8) ? 8 : thread_quantity;
-
+        for (int i = 0; i < thread_number; i++)
+        {
+            th_pool[i] = std::thread(thread_pool::run, this);
+        }
     }
+
     void add_task(std::string url)
     {
         urls_queue.push(url);
-    }    
+    }
 
-private:
-    void init(size_t num)
+    ~thread_pool()
     {
-        for(int i = 0; i < num; i++)
+        run_flag = false;
+        q_cv.notify_all();
+        for (size_t i = 0; i < thread_number; ++i)
         {
-            th_poll[i] = std::thread(thread_poll::run, this);
+            th_pool[i].join();
         }
     }
+
+private:
+   
     void run()
     {
-
-        CURL *curl;
-
-        curl = curl_easy_init();
-        curl_easy_setopt(curl, CURLOPT_URL, NULL);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,write_callback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
-        curl_easy_perform(curl); /* ignores error */
-        curl_easy_cleanup(curl);
- 
+        while (run_flag)
+        {
+            /* code */
+        }
     }
 
     size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata)
     {
-        
+
         std::string file_str = "file_";
-        file_str.append(std::to_string(*(int*)userdata));
+        file_str.append(std::to_string(*(int *)userdata));
         file_str.append(".json");
-        // std::fstream f(file_str, std::ios::app);
-        // f << ptr;
-        return size*nmemb;
+        return size * nmemb;
     }
 
     //  void run() {
@@ -119,11 +129,10 @@ private:
 
     inline static const size_t array_size = 8;
     size_t thread_number;
-    std::array<std::thread, array_size> th_poll;
+    std::array<std::thread, array_size> th_pool;
     std::queue<std::string> urls_queue;
+    std::atomic_bool run_flag = true;
 };
-
-
 
 int main()
 {

@@ -11,10 +11,11 @@
 // #include <algorithm>
 
 #include <tgbot/tgbot.h>
+#include <boost/algorithm/string.hpp>
 
 #include "JsonParser.h"
 #include "UrlGrabber.h"
-#include <boost/algorithm/string.hpp>
+#include "JsonReceiver.h"
 
 using namespace TgBot;
 
@@ -59,6 +60,7 @@ void createKeyboard(const std::map<std::string, std::string> &buttonStringsMap,
 /// TODO: add (int argc, char*[] argv) for json path
 int main(int argc, char *argv[])
 {
+    curl_global_init(CURL_GLOBAL_ALL);
     JsonParser p("/home/andrii/temp_project/ArtStation-tg-bot/bot_configs.json");
     p.parse();
 
@@ -80,28 +82,43 @@ int main(int argc, char *argv[])
         // bot.getEvents().onCommand(com, [&bot, it](Message::Ptr message)
         //                           { bot.getApi().sendMessage(message->chat->id, it->second); });
 
-        bot.getEvents().onCallbackQuery([&bot, &keyboard, com, it](CallbackQuery::Ptr query)
+        bot.getEvents().onCallbackQuery([&bot, &keyboard, com, it, &p](CallbackQuery::Ptr query)
                                         {
             if (StringTools::startsWith(query->data, com)) {
-                ///TODO: add sending photoes utility
                 bot.getApi().sendChatAction(query->message->chat->id,"upload_photo");
-                ///TODO: Add Thread poll that created once and only receive url, return
+                JsonReceiver rec;
+                std::string str;
+                rec(it->second, str);
+                UrlGrabber grab;
+                grab.setParseStr(str);
+                grab.setRegexExpression(p.getHashImageRegex());
+                auto uu = grab.getUrls();
+
+                for(auto iter : uu)
+                {
+                    bot.getApi().sendMessage(query->message->chat->id, iter, false, 0,0,"HTML");
+                }
                 /*
+                ///TODO: add sending photoes utility
+                ///TODO: Add Thread poll that created once and only receive url, return
+                
                     struct art
                     {
                         photo_url,
                         artist,
                         number of artist work
                     }
-                */
+                
 
                 // bot.getApi().sendMessage(query->message->chat->id, msg, true, 0,0,"HTML");
                 ///TODO: Remove second append
+                */
                 std::string msg = it->first;
                 std::replace( msg.begin(), msg.end(), '_', ' ');
                 ///TODO: Add link to artist and Name 
                 msg.append(", <a href=\"").append(it->second).append("\">Artist</a> /menu\n");
                 bot.getApi().sendMessage(query->message->chat->id, msg, true, 0,0,"HTML");
+
             } });
     }
     
@@ -114,7 +131,9 @@ int main(int argc, char *argv[])
     signal(SIGINT, [](int s)
            {
         printf("SIGINT got\n");
-        exit(0); });
+        exit(0); 
+        curl_global_cleanup();
+        });
 
     try
     {

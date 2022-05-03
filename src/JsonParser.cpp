@@ -9,8 +9,8 @@
 const std::string JsonParser::_TOKEN_KEY = "BOT_TOKEN";
 const std::string JsonParser::_MAP_KEY = "KEYBOARD_MAP";
 
-const std::string JsonParser::_URL_KEY = "URL_REGEX";
-const std::string JsonParser::_IMAGE_KEY = "IMAGE_REGEX";
+const std::string JsonParser::_URL_KEY = "FINAL_URL_REGEX";
+const std::string JsonParser::_HASH_IMAGE_KEY = "HASH_IMAGE_REGEX";
 
 JsonParser::JsonParser(std::string json_file_name)
 {
@@ -55,7 +55,7 @@ int JsonParser::parse()
 
         _TOKEN = js[_TOKEN_KEY];
         _URL_REGEX = js[_URL_KEY];
-        _IMAGE_REGEX = js[_IMAGE_KEY];
+        _HASH_REGEX = js[_HASH_IMAGE_KEY];
         _name_and_urls = js[_MAP_KEY];
         // boost::json::value v = boost::json::parse(_json_srt);
         // boost::json::object js = v.get_object();
@@ -77,13 +77,12 @@ int JsonParser::parse()
     return 0;
 }
 
-std::string JsonParser::getUrlRegex() const
+std::string JsonParser::getFinalUrlRegex() const
 {
     return _URL_REGEX;
 }
 
-std::string JsonParser::getImageRegex() const
+std::string JsonParser::getHashImageRegex() const
 {
-    return _IMAGE_REGEX;
+    return _HASH_REGEX;
 }
-

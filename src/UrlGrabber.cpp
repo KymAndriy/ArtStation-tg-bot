@@ -13,7 +13,7 @@ void UrlGrabber::setRegexExpression(std::string regex_expression)
     was_changes = true;
 }
 
-void UrlGrabber::setParseStr(std::string to_parse_srt)
+void UrlGrabber::setParseStr(std::string& to_parse_srt)
 {
     _json_str = to_parse_srt;
     was_changes = true;

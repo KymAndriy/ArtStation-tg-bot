@@ -17,7 +17,7 @@ public:
 
     void setRegexExpression(std::string expression);
 
-    void setParseStr(std::string json_str);
+    void setParseStr(std::string& json_str);
 
     std::vector<std::string> getUrls();
 
