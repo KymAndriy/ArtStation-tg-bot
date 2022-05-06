@@ -8,3 +8,4 @@ Telegram bot:
 // https://www.artstation.com/api/v2/community/explore/projects/trending.json?page=1&dimension=2d&per_page=100
 
 sudo apt-get install g++ make binutils cmake libssl-dev libboost-system-dev zlib1g-dev libcurl4-nss-dev	
+https://www.boost.org/doc/libs/1_66_0/doc/html/boost/lockfree/queue.html

@@ -1,0 +1,49 @@
+mkdir -p build
+g++ src/UrlGrabber.cpp -c --std=c++17 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lcurl -lboost_system -lboost_json -lssl -lcrypto -lpthread 
+mv UrlGrabber.o build
+g++ src/JsonParser.cpp -c --std=c++17 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lcurl -lboost_system -lboost_json -lssl -lcrypto -lpthread
+mv JsonParser.o build
+g++ src/thread_pool.cpp -c --std=c++17 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lcurl -lboost_system -lboost_json -lssl -lcrypto -lpthread
+src/thread_pool.cpp: In lambda function:
+src/thread_pool.cpp:31:52: warning: comparison of integer expressions of different signedness: ‘std::__atomic_base<long int>::__int_type’ {aka ‘long int’} and ‘std::unordered_set<long int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   31 |             return tasks_queue.empty() && last_idx == completed_task_ids.size(); });
+      |                                           ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/thread_pool.cpp: In lambda function:
+src/thread_pool.cpp:40:52: warning: comparison of integer expressions of different signedness: ‘std::__atomic_base<long int>::__int_type’ {aka ‘long int’} and ‘std::unordered_set<long int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   40 |             return tasks_queue.empty() && last_idx == completed_task_ids.size(); });
+      |                                           ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mv thread_pool.o build
+g++ src/main.cpp -o main \
+build/UrlGrabber.o build/JsonParser.o build/JsonReceiver.o \
+--std=c++17 -g -Wall -Iinclude/ -I/usr/local/include -lTgBot -lcurl -lboost_system -lboost_json -lssl -lcrypto -lpthread
+In file included from src/main.cpp:22:
+include/thread_pool.h: In instantiation of ‘int64_t thread_pool::add_task(Func&&, Args&& ...) [with Func = void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&); Args = {std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}; int64_t = long int]’:
+src/main.cpp:123:68:   required from here
+include/thread_pool.h:27:39: error: no matching function for call to ‘async(std::launch, void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&), std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> > >, std::__cxx11::basic_string<char>&, JsonParser&)’
+   27 |         tasks_queue.emplace(std::async(std::launch::deferred, task_func, std::forward<Args>(args)...), task_idx);
+      |                             ~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/boost/asio/detail/future.hpp:20,
+                 from /usr/include/boost/asio/packaged_task.hpp:19,
+                 from /usr/include/boost/asio.hpp:149,
+                 from /usr/local/include/tgbot/net/BoostHttpOnlySslClient.h:9,
+                 from /usr/local/include/tgbot/tgbot.h:10,
+                 from src/main.cpp:13:
+/usr/include/c++/9/future:1707:5: note: candidate: ‘template<class _Fn, class ... _Args> std::future<typename std::__invoke_result<typename std::decay<_Tp>::type, typename std::decay<_Args>::type ...>::type> std::async(std::launch, _Fn&&, _Args&& ...)’
+ 1707 |     async(launch __policy, _Fn&& __fn, _Args&&... __args)
+      |     ^~~~~
+/usr/include/c++/9/future:1707:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/9/future: In substitution of ‘template<class _Fn, class ... _Args> std::future<typename std::__invoke_result<typename std::decay<_Tp>::type, typename std::decay<_Args>::type ...>::type> std::async(std::launch, _Fn&&, _Args&& ...) [with _Fn = void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&); _Args = {std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}]’:
+include/thread_pool.h:27:39:   required from ‘int64_t thread_pool::add_task(Func&&, Args&& ...) [with Func = void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&); Args = {std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}; int64_t = long int]’
+src/main.cpp:123:68:   required from here
+/usr/include/c++/9/future:1707:5: error: no type named ‘type’ in ‘struct std::__invoke_result<void (*)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&), std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, JsonParser>’
+include/thread_pool.h: In instantiation of ‘int64_t thread_pool::add_task(Func&&, Args&& ...) [with Func = void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&); Args = {std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}; int64_t = long int]’:
+src/main.cpp:123:68:   required from here
+/usr/include/c++/9/future:1740:5: note: candidate: ‘template<class _Fn, class ... _Args> std::future<typename std::__invoke_result<typename std::decay<_Tp>::type, typename std::decay<_Args>::type ...>::type> std::async(_Fn&&, _Args&& ...)’
+ 1740 |     async(_Fn&& __fn, _Args&&... __args)
+      |     ^~~~~
+/usr/include/c++/9/future:1740:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/9/future: In substitution of ‘template<class _Fn, class ... _Args> std::future<typename std::__invoke_result<typename std::decay<_Tp>::type, typename std::decay<_Args>::type ...>::type> std::async(_Fn&&, _Args&& ...) [with _Fn = std::launch; _Args = {void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, JsonParser&), std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}]’:
+include/thread_pool.h:27:39:   required from ‘int64_t thread_pool::add_task(Func&&, Args&& ...) [with Func = void (&)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char> >&, std::__cxx11::basic_string<char>, JsonParser&); Args = {std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, JsonParser&}; int64_t = long int]’
+src/main.cpp:123:68:   required from here
+/usr/include/c++/9/future:1740:5: error: no type named ‘type’ in ‘struct std::__invoke_result<std::launch, void (*)(boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, JsonParser&), std::reference_wrapper<boost::lockfree::spsc_queue<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, JsonParser>’
+make: *** [Makefile:29: bot_main] Error 1

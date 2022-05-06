@@ -16,17 +16,17 @@ JsonParser.o:
 	g++ src/JsonParser.cpp $(OBJ_FLAGS)
 	mv JsonParser.o $(BUILD)
 
-JsonReceiver.o:
-	g++ src/JsonReceiver.cpp $(OBJ_FLAGS)
-	mv JsonReceiver.o $(BUILD)
+thread_pool.o:
+	g++ src/thread_pool.cpp $(OBJ_FLAGS)
+	mv thread_pool.o $(BUILD)
 
 UrlGrabber.o:
 	g++ src/UrlGrabber.cpp $(OBJ_FLAGS) 
 	mv UrlGrabber.o $(BUILD)
 
 
-bot_main: UrlGrabber.o JsonParser.o JsonReceiver.o src/main.cpp
+bot_main: UrlGrabber.o JsonParser.o thread_pool.o src/main.cpp
 	g++ src/main.cpp -o main \
-	$(BUILD)/UrlGrabber.o $(BUILD)/JsonParser.o $(BUILD)/JsonReceiver.o \
+	$(BUILD)/UrlGrabber.o $(BUILD)/JsonParser.o $(BUILD)/thread_pool.o $(BUILD)/JsonReceiver.o \
 	$(TG_FLAGS)
 	mv main $(BUILD)

@@ -1,7 +1,8 @@
 {
     "BOT_TOKEN": "5100845220:AAGs-2HtyQW9cxGv4wfEN26qdtUtqqoSg2Q",
-    "FINAL_URL_REGEX": "https://cdnb\\.artstation\\.com/([\\w\\d/-])+(\\.jpg\\?)",
+    "FINAL_URL_REGEX": "https://cdnb\\.artstation\\.com/p/assets/images([\\w\\d/-])+(\\.jpg)",
     "HASH_IMAGE_REGEX": "https://www\\.artstation\\.com/artwork/([\\w\\d])+",
+    "USER_URL_REGEX": "permalink[\"\\ :]+https://www\\.artstation\\.com\/+[\\w\\d\\-]+\"",
     "KEYBOARD_MAP": 
         {   
             "Anatomy":                                      "https://www.artstation.com/api/v2/community/channels/projects.json?channel_id=69&page=1&sorting=trending&dimension=all&per_page=100",
